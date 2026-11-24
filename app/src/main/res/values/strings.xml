@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Unity FPS Unlocker</string>
+    <string name="xposed_desc">为 Unity IL2CPP 游戏解锁帧率、调整渲染分辨率与显示模式</string>
+    <string name="hook_log_action">io.github.hexstr.UnityFPSUnlocker.action.RECORD_HOOK_EVENT</string>
 </resources>

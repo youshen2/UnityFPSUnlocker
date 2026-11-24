@@ -111,6 +111,10 @@ internal fun LogsScreen(onBack: () -> Unit) {
                             summary = DateFormat.getDateTimeInstance().format(Date(current.capturedAt)),
                         )
                     }
+                    BasicComponent(
+                        title = "状态说明",
+                        summary = "“已应用”表示目标参数已写入并通过回读；实测 FPS 还受屏幕刷新率、垂直同步和游戏自身限制影响。",
+                    )
                 }
             }
 
@@ -174,7 +178,7 @@ internal fun LogsScreen(onBack: () -> Unit) {
 @Composable
 private fun HookLogCard(entry: HookLogEntry) {
     val (statusLabel, statusColor) = when (entry.status) {
-        HookLogStatus.Success -> "成功" to MiuixTheme.colorScheme.primary
+        HookLogStatus.Success -> "已应用" to MiuixTheme.colorScheme.primary
         HookLogStatus.Failed -> "失败" to MiuixTheme.colorScheme.error
         HookLogStatus.Skipped -> "已跳过" to MiuixTheme.colorScheme.onSurfaceVariantSummary
     }
@@ -213,5 +217,10 @@ private fun formatHookMessage(message: String): String = when {
         .replace("fps=-1", "FPS 不修改")
         .replace("resolution_scale=-1.000", "分辨率不修改")
         .replace(HookLogContract.FIELD_FPS, "FPS=")
+        .replace("modify_opcode=1", "指令锁定=开")
+        .replace("modify_opcode=0", "指令锁定=关")
+        .replace("measured_fps=-1.0", "实测 FPS 无法获取")
+        .replace("measured_fps=", "实测 FPS=")
         .replace(HookLogContract.FIELD_RESOLUTION_SCALE, "分辨率缩放=")
+        .replace(" ", " · ")
 }

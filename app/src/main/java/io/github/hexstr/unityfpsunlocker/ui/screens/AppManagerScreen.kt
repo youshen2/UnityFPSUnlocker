@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.github.hexstr.UnityFPSUnlocker.AppPolicy
-import io.github.hexstr.UnityFPSUnlocker.ModulePreferences
+import io.github.hexstr.UnityFPSUnlocker.config.AppPolicy
+import io.github.hexstr.UnityFPSUnlocker.config.ModulePreferences
 import io.github.hexstr.UnityFPSUnlocker.apps.InstalledApp
 import io.github.hexstr.UnityFPSUnlocker.ui.components.AppIcon
 import io.github.hexstr.UnityFPSUnlocker.ui.components.BackButton

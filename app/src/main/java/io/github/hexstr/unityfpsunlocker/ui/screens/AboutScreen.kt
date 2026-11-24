@@ -29,7 +29,7 @@ import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TopAppBar
 import top.yukonga.miuix.kmp.basic.rememberTopAppBarState
-import top.yukonga.miuix.kmp.extra.SuperArrow
+import top.yukonga.miuix.kmp.preference.ArrowPreference
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.overScrollVertical
 import top.yukonga.miuix.kmp.utils.scrollEndHaptic
@@ -110,12 +110,12 @@ internal fun AboutScreen(onBack: () -> Unit) {
 
             item {
                 SettingsSection(title = "项目") {
-                    SuperArrow(
+                    ArrowPreference(
                         title = "上游项目",
                         summary = upstreamUrl,
                         onClick = { openUrl(upstreamUrl) },
                     )
-                    SuperArrow(
+                    ArrowPreference(
                         title = "源码仓库",
                         summary = sourceUrl,
                         onClick = { openUrl(sourceUrl) },

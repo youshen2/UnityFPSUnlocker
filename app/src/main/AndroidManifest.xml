@@ -8,39 +8,40 @@
     <uses-permission android:name="com.android.permission.GET_INSTALLED_APPS" />
 
     <application
+        android:name=".App"
+        android:allowBackup="false"
+        android:description="@string/xposed_desc"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_launcher"
-        android:theme="@style/Theme.UnityFPSUnlocker"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:theme="@style/Theme.UnityFPSUnlocker">
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.SettingsActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
+            </intent-filter>
+        </activity>
+
+        <activity-alias
+            android:name=".launcher"
+            android:enabled="true"
+            android:exported="true"
+            android:targetActivity=".ui.SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
 
-        <!-- Cross-UID target apps authenticate with an install-specific token. -->
         <receiver
             android:name=".logging.HookLogReceiver"
             android:exported="true"
             tools:ignore="ExportedReceiver" />
-
-        <meta-data
-            android:name="xposedmodule"
-            android:value="true" />
-        <meta-data
-            android:name="xposedsharedprefs"
-            android:value="true" />
-        <meta-data
-            android:name="xposeddescription"
-            android:value="为unity-il2cpp提供在手机上设置FPS的模块" />
-        <meta-data
-            android:name="xposedminversion"
-            android:value="93" />
     </application>
 
 </manifest>

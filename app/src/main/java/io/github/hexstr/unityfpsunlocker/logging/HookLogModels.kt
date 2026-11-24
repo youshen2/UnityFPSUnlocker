@@ -1,6 +1,6 @@
 package io.github.hexstr.UnityFPSUnlocker.logging
 
-internal enum class HookLogStatus(val wireName: String) {
+enum class HookLogStatus(val wireName: String) {
     Success(HookLogContract.STATUS_SUCCESS),
     Failed(HookLogContract.STATUS_FAILED),
     Skipped(HookLogContract.STATUS_SKIPPED);
@@ -11,7 +11,7 @@ internal enum class HookLogStatus(val wireName: String) {
     }
 }
 
-internal data class HookLogEntry(
+data class HookLogEntry(
     val sequence: Long,
     val packageName: String,
     val status: HookLogStatus,
@@ -19,7 +19,7 @@ internal data class HookLogEntry(
     val message: String,
 )
 
-internal data class ModuleLogSnapshot(
+data class HookLogSnapshot(
     val entries: List<HookLogEntry>,
     val capturedAt: Long = System.currentTimeMillis(),
 )

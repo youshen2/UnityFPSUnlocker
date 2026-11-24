@@ -3,7 +3,8 @@ package io.github.hexstr.UnityFPSUnlocker.logging
 import android.content.Context
 import org.json.JSONObject
 
-internal object HookLogStore {
+/** 模块进程本地的环形日志存储，最多保留 [MAX_ENTRIES] 条记录。 */
+object HookLogStore {
     const val MAX_ENTRIES = 200
 
     private const val PREFS_NAME = "hook_event_logs"
@@ -31,7 +32,7 @@ internal object HookLogStore {
             .apply()
     }
 
-    fun read(context: Context): ModuleLogSnapshot {
+    fun read(context: Context): HookLogSnapshot {
         val preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val nextSequence = preferences.getLong(KEY_NEXT_SEQUENCE, 0L)
         val firstSequence = (nextSequence - MAX_ENTRIES).coerceAtLeast(0L)
@@ -41,7 +42,7 @@ internal object HookLogStore {
                 parseEntry(rawEntry, sequence)?.let(::add)
             }
         }
-        return ModuleLogSnapshot(entries = entries)
+        return HookLogSnapshot(entries = entries)
     }
 
     private fun parseEntry(rawEntry: String, expectedSequence: Long): HookLogEntry? =

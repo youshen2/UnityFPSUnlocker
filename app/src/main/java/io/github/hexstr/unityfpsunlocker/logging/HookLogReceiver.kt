@@ -4,21 +4,23 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import io.github.hexstr.UnityFPSUnlocker.preferences.PreferenceContract
+import io.github.hexstr.UnityFPSUnlocker.config.HookLogToken
 
 class HookLogReceiver : BroadcastReceiver() {
+
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != HookLogContract.ACTION) return
-        val expectedToken = context.getSharedPreferences(
-            PreferenceContract.PREFS_NAME,
-            Context.MODE_PRIVATE,
-        ).getString(PreferenceContract.KEY_HOOK_LOG_TOKEN, null) ?: return
-        if (intent.getStringExtra(HookLogContract.EXTRA_PROTOCOL_TOKEN) != expectedToken) return
+
+        val expectedToken = HookLogToken.local(context) ?: return
+        if (intent.getStringExtra(HookLogContract.EXTRA_TOKEN) != expectedToken) return
 
         val packageName = intent.getStringExtra(HookLogContract.EXTRA_PACKAGE_NAME)
-            ?.takeIf(PreferenceContract::isValidPackageName)
+            ?.takeIf(::isValidPackageName)
             ?: return
-        if (Build.VERSION.SDK_INT >= 34 && sentFromPackage != packageName) return
+        if (Build.VERSION.SDK_INT >= 34) {
+            val sender = sentFromPackage
+            if (sender != null && sender != packageName) return
+        }
 
         val status = HookLogStatus.fromWireName(
             intent.getStringExtra(HookLogContract.EXTRA_STATUS),
@@ -34,6 +36,9 @@ class HookLogReceiver : BroadcastReceiver() {
             message = message,
         )
     }
+
+    private fun isValidPackageName(value: String): Boolean =
+        value.isNotEmpty() && value.all { it.isLetterOrDigit() || it == '.' || it == '_' }
 
     private companion object {
         const val MAX_MESSAGE_LENGTH = 500

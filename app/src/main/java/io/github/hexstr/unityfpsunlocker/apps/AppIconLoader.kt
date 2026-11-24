@@ -8,7 +8,7 @@ import androidx.core.graphics.drawable.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-internal object AppIconLoader {
+object AppIconLoader {
     private const val CACHE_SIZE_KIB = 8 * 1024
     private const val ICON_SIZE_DP = 48
 
