@@ -22,19 +22,14 @@ target_compile_options(xdl PRIVATE -Oz -ffunction-sections -fdata-sections)
 add_library(
     UnityFPSUnlocker
     SHARED
-    xposed_entry.cc
-    fpslimiter.cc
-    logging/hook_event_reporter.cc
-    unity/unity_engine.cc
-    utility/config_lite.cc
+    entry.cc
+    fps_hook.cc
+    il2cpp_runtime.cc
+    memory_patch.cc
+    event_reporter.cc
 )
 
-target_include_directories(
-    UnityFPSUnlocker
-    PRIVATE
-    .
-    third/xdl
-)
+target_include_directories(UnityFPSUnlocker PRIVATE . third/xdl)
 
 target_compile_options(
     UnityFPSUnlocker
@@ -52,6 +47,7 @@ target_link_options(
     -Wl,--gc-sections
 )
 
+find_package(Threads REQUIRED)
 find_library(log-lib log)
 find_library(dl-lib dl)
 
@@ -59,6 +55,7 @@ target_link_libraries(
     UnityFPSUnlocker
     PRIVATE
     xdl
+    Threads::Threads
     ${log-lib}
     ${dl-lib}
 )

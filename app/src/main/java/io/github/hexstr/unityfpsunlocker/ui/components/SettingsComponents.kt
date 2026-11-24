@@ -30,8 +30,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import io.github.hexstr.UnityFPSUnlocker.AppPolicy
-import io.github.hexstr.UnityFPSUnlocker.ModuleConfig
+import io.github.hexstr.UnityFPSUnlocker.config.AppPolicy
+import io.github.hexstr.UnityFPSUnlocker.config.ModuleConfig
 import io.github.hexstr.UnityFPSUnlocker.apps.AppIconLoader
 import io.github.hexstr.UnityFPSUnlocker.apps.InstalledApp
 import io.github.hexstr.UnityFPSUnlocker.display.DisplayModeOption
@@ -46,7 +46,7 @@ import top.yukonga.miuix.kmp.basic.Switch
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextButton
 import top.yukonga.miuix.kmp.basic.TextField
-import top.yukonga.miuix.kmp.extra.SuperDialog
+import top.yukonga.miuix.kmp.overlay.OverlayDialog
 import top.yukonga.miuix.kmp.icon.MiuixIcons
 import top.yukonga.miuix.kmp.icon.extended.Back
 import top.yukonga.miuix.kmp.theme.MiuixTheme
@@ -213,7 +213,7 @@ internal fun NumberEditorDialog(
     }
     val valid = spec.validator(value)
 
-    SuperDialog(
+    OverlayDialog(
         show = true,
         title = spec.title,
         summary = spec.summary,
@@ -265,7 +265,7 @@ internal fun DisplayModeDialog(
     onDismiss: () -> Unit,
     onSelect: (Int) -> Unit,
 ) {
-    SuperDialog(
+    OverlayDialog(
         show = show,
         title = "显示模式",
         summary = "是否修改显示模式由设置项右侧开关控制",

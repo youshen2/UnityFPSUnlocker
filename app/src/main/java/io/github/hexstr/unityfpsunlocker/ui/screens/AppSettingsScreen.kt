@@ -10,11 +10,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import io.github.hexstr.UnityFPSUnlocker.AppPolicy
-import io.github.hexstr.UnityFPSUnlocker.ModuleConfig
-import io.github.hexstr.UnityFPSUnlocker.ModulePreferences
+import io.github.hexstr.UnityFPSUnlocker.config.AppPolicy
+import io.github.hexstr.UnityFPSUnlocker.config.ModuleConfig
+import io.github.hexstr.UnityFPSUnlocker.config.ModulePreferences
 import io.github.hexstr.UnityFPSUnlocker.apps.InstalledApp
 import io.github.hexstr.UnityFPSUnlocker.display.DisplayModeOption
 import io.github.hexstr.UnityFPSUnlocker.ui.components.AppIcon
@@ -22,6 +23,7 @@ import io.github.hexstr.UnityFPSUnlocker.ui.components.BackButton
 import io.github.hexstr.UnityFPSUnlocker.ui.components.ModuleConfigEditor
 import io.github.hexstr.UnityFPSUnlocker.ui.components.SettingsSection
 import io.github.hexstr.UnityFPSUnlocker.ui.components.ToggleSetting
+import io.github.hexstr.UnityFPSUnlocker.ui.ScopeManager
 import io.github.hexstr.UnityFPSUnlocker.ui.components.delaySummary
 import io.github.hexstr.UnityFPSUnlocker.ui.components.fpsSummary
 import io.github.hexstr.UnityFPSUnlocker.ui.components.scaleSummary
@@ -43,8 +45,9 @@ internal fun AppSettingsScreen(
     onBack: () -> Unit,
     onPolicyChanged: () -> Unit,
 ) {
+    val context = LocalContext.current
     val scrollBehavior = MiuixScrollBehavior(rememberTopAppBarState())
-    var policy by remember(app.packageName) {
+    var policy by remember(app.packageName, repository) {
         mutableStateOf(repository.readAppPolicy(app.packageName))
     }
     val shownConfig = if (policy.useGlobal) globalConfig else policy.config
@@ -106,12 +109,27 @@ internal fun AppSettingsScreen(
                                     policy.copy(
                                         managed = true,
                                         enabled = true,
-                                        useGlobal = true,
+                                        useGlobal = false,
                                         config = globalConfig,
                                     ),
                                 )
                             } else if (policy.managed) {
                                 save(policy.copy(enabled = enabled))
+                            }
+                            if (enabled) {
+                                ScopeManager.request(context, app.packageName)
+                            } else {
+                                val disabledPolicy = policy.copy(enabled = false)
+                                save(disabledPolicy)
+                                ScopeManager.remove(context, app.packageName) { inScope ->
+                                    if (inScope == false) {
+                                        repository.writeAppPolicy(
+                                            disabledPolicy.copy(managed = false),
+                                        )
+                                        policy = repository.readAppPolicy(app.packageName)
+                                        onPolicyChanged()
+                                    }
+                                }
                             }
                         },
                     )

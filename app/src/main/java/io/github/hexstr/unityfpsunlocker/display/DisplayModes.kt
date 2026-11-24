@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.view.WindowManager
-import io.github.hexstr.UnityFPSUnlocker.ModuleConfig
+import io.github.hexstr.UnityFPSUnlocker.config.ModuleConfig
 import java.util.Locale
 
 data class DisplayModeOption(
@@ -19,7 +19,8 @@ fun loadDisplayModes(activity: Activity): List<DisplayModeOption> {
         @Suppress("DEPRECATION")
         (activity.getSystemService(Context.WINDOW_SERVICE) as? WindowManager)?.defaultDisplay
     }
-    val options = display?.supportedModes.orEmpty()
+
+    val modes = display?.supportedModes.orEmpty()
         .map { mode ->
             DisplayModeOption(
                 id = mode.modeId,
@@ -28,10 +29,11 @@ fun loadDisplayModes(activity: Activity): List<DisplayModeOption> {
             )
         }
         .distinctBy(DisplayModeOption::id)
+
     return listOf(
         DisplayModeOption(
-            ModuleConfig.NO_CHANGE_DISPLAY_MODE_ID,
-            "不修改显示模式（由系统管理）",
+            ModuleConfig.NO_DISPLAY_MODE_ID,
+            "不修改（由系统管理）",
         ),
-    ) + options
+    ) + modes
 }

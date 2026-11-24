@@ -20,7 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
-import io.github.hexstr.UnityFPSUnlocker.ModulePreferences
+import io.github.hexstr.UnityFPSUnlocker.config.ModulePreferences
 import io.github.hexstr.UnityFPSUnlocker.apps.InstalledApp
 import io.github.hexstr.UnityFPSUnlocker.apps.MIUI_INSTALLED_APPS_PERMISSION
 import io.github.hexstr.UnityFPSUnlocker.apps.loadInstalledApps
@@ -51,13 +51,14 @@ private val SettingsScreen.depth: Int
 fun SettingsApp() {
     val context = LocalContext.current
     val activity = context as Activity
-    val repository = remember { ModulePreferences(context) }
+    val store = rememberConfigStore()
+    val repository = remember(store) { ModulePreferences(store) }
     val displayModes = remember { loadDisplayModes(activity) }
 
-    var globalConfig by remember { mutableStateOf(repository.readGlobal()) }
-    var onlyManagedApps by remember { mutableStateOf(repository.onlyManagedApps()) }
-    var managedPackages by remember { mutableStateOf(repository.managedPackages()) }
-    var managedCount by remember { mutableIntStateOf(repository.enabledManagedCount()) }
+    var globalConfig by remember(repository) { mutableStateOf(repository.readGlobal()) }
+    var onlyManagedApps by remember(repository) { mutableStateOf(repository.onlyManagedApps()) }
+    var managedPackages by remember(repository) { mutableStateOf(repository.managedPackages()) }
+    var managedCount by remember(repository) { mutableIntStateOf(repository.enabledManagedCount()) }
     var installedApps by remember { mutableStateOf<List<InstalledApp>>(emptyList()) }
     var loadingApps by remember { mutableStateOf(false) }
     var appsLoadError by remember { mutableStateOf<String?>(null) }

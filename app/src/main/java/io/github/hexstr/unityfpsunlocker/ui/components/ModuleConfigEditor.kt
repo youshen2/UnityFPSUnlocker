@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import io.github.hexstr.UnityFPSUnlocker.ModuleConfig
+import io.github.hexstr.UnityFPSUnlocker.config.ModuleConfig
 import io.github.hexstr.UnityFPSUnlocker.display.DisplayModeOption
 
 @Composable
@@ -63,12 +63,14 @@ internal fun ModuleConfigEditor(
             },
             onClick = { showDisplayModes = true },
         )
-        ToggleSetting(
-            title = "修改指令",
-            summary = "关闭即不修改目标帧率函数指令；仅在设置 FPS 时生效",
-            checked = config.modOpcode,
-            onCheckedChange = { onConfigChange(config.copy(modOpcode = it)) },
-        )
+        if (config.fpsEnabled) {
+            ToggleSetting(
+                title = "锁定帧率设置",
+                summary = "把 set_targetFrameRate 首指令改为返回，避免游戏启动后覆盖目标帧率",
+                checked = config.modifyOpcode,
+                onCheckedChange = { onConfigChange(config.copy(modifyOpcode = it)) },
+            )
+        }
     }
 
     editingField?.let { field ->
