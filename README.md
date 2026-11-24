@@ -79,6 +79,5 @@ app/src/main/
 - 原作者：[hexstr](https://github.com/hexstr)
 - 上游项目：[hexstr/UnityFPSUnlocker](https://github.com/hexstr/UnityFPSUnlocker)
 - 二改来源：[youshen2/UnityFPSUnlocker](https://github.com/youshen2/UnityFPSUnlocker)
-- libxposed API 101 中文文档：<https://nspron.github.io/libXposed-101-Api-Chinese/>
 
 本项目使用 MIT License，详见 `LICENSE`。
